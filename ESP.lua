@@ -147,8 +147,8 @@ function ESP:Get_Tool(Player)
     local Character = self:Get_Character(Player)
     if Character then
         local Tool = Character:FindFirstChildOfClass("Tool")
-        local Ammo = Tool:FindFirstChild('Ammo')
-        local MaxAmmo = Tool:FindFirstChild('MaxAmmo')
+        local Ammo = Character:FindFirstDescendant("Ammo")
+        local MaxAmmo = Character:FindFirstDescendant("MaxAmmo")
         if Tool then
             return "[ " .. Tool.Name .. " ]"
         elseif Tool and Ammo and MaxAmmo then
