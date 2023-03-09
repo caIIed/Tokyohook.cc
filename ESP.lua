@@ -1,11 +1,4 @@
---[[------------------------------------------------
-|
-|    Library Made for IonHub (discord.gg/seU6gab)
-|    Developed by tatar0071#0627 and tested#0021
-|    IF YOU USE THIS, PLEASE CREDIT DEVELOPER(S)!
-|               Edited By Call.
-|
---]]------------------------------------------------
+-- tested, tartar, call
 
 -- Services
 local Workspace = game:GetService("Workspace")
@@ -153,15 +146,13 @@ function ESP:Get_Tool(Player)
     local Character = self:Get_Character(Player)
     if Character then
         local Tool = Character:FindFirstChildOfClass("Tool")
-        local Ammo = Tool:FindFirstChild("Ammo")
-        local MaxAmmo = Tool:FindFirstChild("MaxAmmo")
         if Tool then
-            return "[ " .. Tool.Name .. " ]" .. " [ " .. 
+            return "[ " .. Tool.Name .. " ]"
         elseif Tool and Ammo and MaxAmmo then
             return "[ " .. Tool.Name .. " ]" .. " [ " .. Ammo.Value .. " / " .. MaxAmmo.Value .. " ]"
         end
     end
-    return " "
+    return "[ " .. "Hands" .. " ]"
 end
 
 function ESP:Get_Health(Player)
