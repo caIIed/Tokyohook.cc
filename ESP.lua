@@ -1,4 +1,5 @@
 -- tested, tartar, call
+-- Ammo Fix
 
 -- Services
 local Workspace = game:GetService("Workspace")
@@ -146,6 +147,8 @@ function ESP:Get_Tool(Player)
     local Character = self:Get_Character(Player)
     if Character then
         local Tool = Character:FindFirstChildOfClass("Tool")
+        local Ammo = Tool:FindFirstChild('Ammo')
+        local MaxAmmo = Tool:FindFirstChild('MaxAmmo')
         if Tool then
             return "[ " .. Tool.Name .. " ]"
         elseif Tool and Ammo and MaxAmmo then
