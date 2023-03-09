@@ -1,4 +1,11 @@
--- tested, tartar, call
+--[[------------------------------------------------
+|
+|    Library Made for IonHub (discord.gg/seU6gab)
+|    Developed by tatar0071#0627 and tested#0021
+|    IF YOU USE THIS, PLEASE CREDIT DEVELOPER(S)!
+|               Edited By Call.
+|
+--]]------------------------------------------------
 
 -- Services
 local Workspace = game:GetService("Workspace")
@@ -151,7 +158,7 @@ function ESP:Get_Tool(Player)
         if Tool then
             return "[ " .. Tool.Name .. " ]" .. " [ " .. 
         elseif Tool and Ammo and MaxAmmo then
-            "[ " .. Tool.Name .. " ]" .. " [ " .. Ammo.Value .. " / " .. MaxAmmo.Value .. " ]"
+            return "[ " .. Tool.Name .. " ]" .. " [ " .. Ammo.Value .. " / " .. MaxAmmo.Value .. " ]"
         end
     end
     return " "
