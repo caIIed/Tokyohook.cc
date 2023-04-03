@@ -85,12 +85,12 @@ do
         -- Theme Variables
         --local themes = {}
         local theme = {
-            accent = Color3.fromHex("#5d3e98"),
-            lightcontrast = Color3.fromHex("#1e1e1e"),
-            darkcontrast = Color3.fromHex("#141414"),
-            outline = Color3.fromHex("#000000"),
-            inline = Color3.fromHex("#323232"),
-            textcolor = Color3.fromRGB(255, 255, 255),
+            accent = Color3.fromRGB(114, 111, 181),
+            lightcontrast = Color3.fromRGB(19, 19, 19),
+            darkcontrast =Color3.fromRGB(13, 13, 13),
+            outline = Color3.fromRGB(0, 0, 0),
+            inline = Color3.fromRGB(28, 28, 28),
+            textcolor = Color3.fromRGB(220, 220, 220),
             textdark = Color3.fromRGB(175, 175, 175),
             textborder = Color3.fromRGB(0, 0, 0),
             cursoroutline = Color3.fromRGB(10, 10, 10),
