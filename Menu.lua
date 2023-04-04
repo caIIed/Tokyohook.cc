@@ -1,8 +1,8 @@
 --[[
     To Do:
 
-    [+] Notifications
     [+] Finish Documentation (Everything)
+    [+] Seperator
     
     @gs.cc
 ]]
@@ -16,6 +16,8 @@ if not LPH_OBFUSCATED then
     LPH_ENCNUM = function(...) return ... end
     LPH_CRASH = function() return print(debug.traceback()) end
 end;
+
+local Tween = loadstring(game:HttpGet("https://raw.githubusercontent.com/vozoid/utility/main/Tween.lua"))();
 
 local library = {};
 do 
@@ -89,7 +91,7 @@ do
             lightcontrast = Color3.fromRGB(19, 19, 19),
             darkcontrast =Color3.fromRGB(13, 13, 13),
             outline = Color3.fromRGB(0, 0, 0),
-            inline = Color3.fromRGB(28, 28, 28),
+            inline = Color3.fromRGB(42, 42, 42),
             textcolor = Color3.fromRGB(220, 220, 220),
             textdark = Color3.fromRGB(175, 175, 175),
             textborder = Color3.fromRGB(0, 0, 0),
@@ -7411,6 +7413,152 @@ do
             end
         end
     end)();
+    
+    local notifications = {}; do 
+        function notifications.UpdateNotifications()
+            local i = 0
+            for v in next, notifications do
+                if v.holder then 
+                    local tween = Tween.new(v.holder, TweenInfo.new(0.1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = Vector2.new(20, 75 + (i * 30))})
+                    tween:Play()
+                    i = i + 1
+                end
+            end
+        end;
+        
+        function notifications.UpdateNotifications2(drawing)
+            for i,v in pairs(drawing) do
+                if type(v) == "table" then
+                    local tween = Tween.new(v, TweenInfo.new(1, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {Transparency = 0})
+                    tween:Play()
+                end
+            end
+        end
+        
+        local function CustomCreate(class, properties)
+            local thing = Drawing.new(class)
+            
+            for i, v in next, properties do 
+                thing[i] = v 
+            end;
+            
+            return thing
+        end;
+        
+        function notifications.Notify(msg, time, color)
+            time = time or 2
+            local notification = {};
+            local z = 10
+            
+            notification.holder = CustomCreate("Square", { 
+                Position = Vector2.new(-30, 75),
+                Transparency = 0,
+                Visible = true,
+                Size = Vector2.new(0, 17)
+            });
+        
+            notification.background = CustomCreate("Square", {
+                Size = notification.holder.Size,
+                Position = notification.holder.Position,
+                Color = library.theme.darkcontrast,
+                ZIndex = z,
+                Thickness = 1,
+                Filled = true,
+                Visible = true,
+                Transparency = 1,
+            });
+        
+            notification.notification_text = CustomCreate("Text", {
+                Size = 13,
+                Font = 2,
+                Color = Color3.new(1,1,1),
+                Outline = true, 
+                Text = msg and tostring(msg) or "Empty notification",
+                Position = notification.background.Position + Vector2.new(7,0),
+                Visible = true,
+                Transparency = 1,
+                ZIndex = z + 5
+            });
+        
+            notification.background.Size = Vector2.new(notification.notification_text.TextBounds.X + 15, 17)
+        
+            notification.border1 = CustomCreate("Square", {
+                Position = notification.background.Position - Vector2.new(1,1),
+                Size = notification.background.Size + Vector2.new(2,2),
+                Color = library.theme.inline, 
+                Visible = true,
+                ZIndex = z - 1,
+                Filled = true,
+                Thickness = 1, 
+                Transparency = 1,
+            });
+            
+            notification.border2 = CustomCreate("Square", {
+                Size = notification.border1.Size + Vector2.new(2,2),
+                Position = notification.border1.Position - Vector2.new(1,1),
+                Color = library.theme.outline,
+                ZIndex = z - 2,
+                Filled = true,
+                Thickness = 1,
+                Transparency = 1,
+                Visible = true
+            });
+            
+            notification.accent_bar = CustomCreate("Square", {
+                Size = Vector2.new(1, notification.background.Size.Y + 2),
+                Position = notification.background.Position - Vector2.new(1,1),
+                Color = library.theme.accent, 
+                ZIndex = z+5, 
+                Thickness = 1,
+                Filled = true,
+                Transparency = 1,
+                Visible = true
+            });
+        
+            notification.accent_secondary = CustomCreate("Square", {
+                Size = Vector2.new(notification.background.Size.X, 1),
+                Position = Vector2.new(notification.background.Position.X + 1,notification. background.Position.Y + notification.background.Size.Y),
+                Color = library.theme.accent,
+                ZIndex = z+5,
+                Thickness = 1,
+                Filled = true,
+                Transparency = 1,
+                Visible = true
+            });
+        
+            notifications[notification] = true
+            
+            local connection
+            function notification:remove()
+                connection:Disconnect()
+                notifications[notification] = nil 
+                notifications.UpdateNotifications();
+            end;
+            task.spawn(function()
+                connection = game.GetService(game, "RunService").RenderStepped:Connect(function()
+                    notification.background.Position = notification.holder.Position
+                    notification.notification_text.Position = notification.background.Position + Vector2.new(7,0)
+                    notification.border1.Position = notification.background.Position - Vector2.new(1,1) 
+                    notification.accent_bar.Position = notification.background.Position - Vector2.new(1,1);
+                    notification.border2.Position = notification.border1.Position - Vector2.new(1,1)
+                    notification.accent_secondary.Position = Vector2.new(notification.background.Position.X + 1,notification. background.Position.Y + notification.background.Size.Y)
+                end);
+                notifications.UpdateNotifications()
+                local sizetween = Tween.new(notification.accent_secondary, TweenInfo.new(time, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {Size = Vector2.new(1,1)});
+                sizetween:Play()
+                task.wait(time)
+                    
+                notifications.UpdateNotifications2(notification)
+                task.wait(1.2)
+                notification:remove()
+            end);
+        
+        
+            return notification
+        end;
+    end;
+    
+    library.notifications = notifications
 end;
 
 return library, library.utility, library.pointers, library.theme;
